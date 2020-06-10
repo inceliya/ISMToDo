@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ISMToDo.Models.Task>
+
+@{
+    ViewBag.Title = "ToDoList";
+}
+<h2>ToDoList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" id="tableTask">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Done)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td id="itemDone @item.Id">
+                @Html.EditorFor(modelItem => item.Done)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    document.querySelector('#tableTask').addEventListener('click', (event) => {
+        if (event.target.id.startsWith('item_Done')) {
+            let id = event.target.parentNode.id.substring(9);
+            return location.href = `/Tasks/CompleteTask?id=${id}`;
+    }
+})
+</script>
